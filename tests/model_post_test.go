@@ -1,4 +1,4 @@
-package modeltests
+package tests
 
 import (
 	"log"
@@ -54,7 +54,6 @@ func TestSavePost(t *testing.T) {
 	assert.Equal(t, newPost.Title, savedPost.Title)
 	assert.Equal(t, newPost.Content, savedPost.Content)
 	assert.Equal(t, newPost.AuthorID, savedPost.AuthorID)
-
 }
 
 func TestGetPostByID(t *testing.T) {
@@ -93,7 +92,7 @@ func TestUpdateAPost(t *testing.T) {
 		Content:  "modiupdate@gmail.com",
 		AuthorID: post.AuthorID,
 	}
-	updatedPost, err := postUpdate.UpdateAPost(server.DB)
+	updatedPost, err := postUpdate.UpdateAPost(server.DB, post.ID)
 	if err != nil {
 		t.Errorf("this is the error updating the user: %v\n", err)
 		return
