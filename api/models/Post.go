@@ -90,11 +90,17 @@ func (p *Post) FindPostByID(db *gorm.DB, pid uint64) (*Post, error) {
 	return p, nil
 }
 
-func (p *Post) UpdateAPost(db *gorm.DB) (*Post, error) {
+func (p *Post) UpdateAPost(db *gorm.DB, pid uint64) (*Post, error) {
 
 	var err error
-
-	err = db.Debug().Model(&Post{}).Where("id = ?", p.ID).Updates(Post{Title: p.Title, Content: p.Content, UpdatedAt: time.Now()}).Error
+	db = db.Debug().Model(&Post{}).Where("id = ?", pid).Take(&Post{}).UpdateColumns(
+		map[string]interface{}{
+			"title":      p.Title,
+			"content":    p.Content,
+			"updated_at": time.Now(),
+		},
+	)
+	err = db.Debug().Model(&Post{}).Where("id = ?", pid).Take(&p).Error
 	if err != nil {
 		return &Post{}, err
 	}

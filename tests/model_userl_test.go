@@ -1,4 +1,4 @@
-package modeltests
+package tests
 
 import (
 	"log"
@@ -14,12 +14,12 @@ func TestFindAllUsers(t *testing.T) {
 
 	err := refreshUserTable()
 	if err != nil {
-		log.Fatalf("Error refreshing user table %v\n", err)
+		log.Fatal(err)
 	}
 
-	err = seedUsers()
+	_, err = seedUsers()
 	if err != nil {
-		log.Fatalf("Error seeding user table %v\n", err)
+		log.Fatal(err)
 	}
 
 	users, err := userInstance.FindAllUsers(server.DB)
@@ -34,8 +34,9 @@ func TestSaveUser(t *testing.T) {
 
 	err := refreshUserTable()
 	if err != nil {
-		log.Fatalf("Error user refreshing table %v\n", err)
+		log.Fatal(err)
 	}
+
 	newUser := models.User{
 		ID:       1,
 		Email:    "test@gmail.com",
@@ -44,7 +45,7 @@ func TestSaveUser(t *testing.T) {
 	}
 	savedUser, err := newUser.SaveUser(server.DB)
 	if err != nil {
-		t.Errorf("Error while saving a user: %v\n", err)
+		t.Errorf("this is the error getting the users: %v\n", err)
 		return
 	}
 	assert.Equal(t, newUser.ID, savedUser.ID)
@@ -52,11 +53,11 @@ func TestSaveUser(t *testing.T) {
 	assert.Equal(t, newUser.Nickname, savedUser.Nickname)
 }
 
-func TestGetUserByID(t *testing.T) {
+func TestFindUserByID(t *testing.T) {
 
 	err := refreshUserTable()
 	if err != nil {
-		log.Fatalf("Error user refreshing table %v\n", err)
+		log.Fatal(err)
 	}
 
 	user, err := seedOneUser()
@@ -116,7 +117,7 @@ func TestDeleteAUser(t *testing.T) {
 
 	isDeleted, err := userInstance.DeleteAUser(server.DB, user.ID)
 	if err != nil {
-		t.Errorf("this is the error deleting the user: %v\n", err)
+		t.Errorf("this is the error updating the user: %v\n", err)
 		return
 	}
 	//one shows that the record has been deleted or:
